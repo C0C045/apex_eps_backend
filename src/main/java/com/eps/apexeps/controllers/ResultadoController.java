@@ -1,7 +1,10 @@
 package com.eps.apexeps.controllers;
 
 import com.eps.apexeps.models.Resultado;
+import com.eps.apexeps.models.Genera;
+import com.eps.apexeps.DTOs.ResultadoDiagnosticoDTO;
 import com.eps.apexeps.repositories.ResultadoRepository;
+import com.eps.apexeps.repositories.GeneraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +19,10 @@ public class ResultadoController {
     @Autowired
     private ResultadoRepository resultadoRepository;
 
-    // Obtener todos los resultados
+    @Autowired
+    private GeneraRepository generaRepository;
+
+    // Obtener citas de paciente (Agenda)
     @GetMapping
     public List<Resultado> getAllResultados() {
         return resultadoRepository.findAll();
@@ -59,4 +65,31 @@ public class ResultadoController {
         }
         return ResponseEntity.notFound().build();
     }
+
+
+    @GetMapping("/pendientes")
+    public List<Resultado> getPendientesByQueryParam(@RequestParam Integer pacienteId) {
+        return resultadoRepository.findByPacienteIdAndEstado(pacienteId, "PENDIENTE");
+    }
+    
+    @PostMapping("/actualizar-resultado")
+    public ResponseEntity<String> actualizarResultadoYGenerarDiagnosticos(@RequestBody ResultadoDiagnosticoDTO dto) {
+        Optional<Resultado> resultadoOptional = resultadoRepository.findById(dto.getResultadoId());
+
+        if (resultadoOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Resultado resultado = resultadoOptional.get();
+        resultado.setResultado(dto.getNuevoResultadoTexto());
+        resultadoRepository.save(resultado);
+
+        for (ResultadoDiagnosticoDTO.DiagnosticoDTO diag : dto.getDiagnosticos()) {
+            Genera nuevoGenera = new Genera(resultado.getId(), diag.getDiagnostico(), diag.getObservacion());
+            generaRepository.save(nuevoGenera);
+        }
+
+        return ResponseEntity.ok("Resultado actualizado y diagnósticos registrados correctamente.");
+    }
+
 }
