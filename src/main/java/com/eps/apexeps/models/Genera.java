@@ -2,6 +2,7 @@ package com.eps.apexeps.models;
 
 import jakarta.persistence.*;
 
+// Diagnosticos o Resultados asociados a una cita (agenda)
 @Entity
 @Table(name = "genera")
 public class Genera {
@@ -21,7 +22,8 @@ public class Genera {
     private String observacion;
 
     // Constructores
-    public Genera() {}
+    public Genera() {
+    }
 
     public Genera(Long agendaId, String diagnostico, String observacion) {
         this.agendaId = agendaId;
@@ -30,14 +32,31 @@ public class Genera {
     }
 
     // Getters y Setters
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Long getAgendaId() { return agendaId; }
-    public void setAgendaId(Long agendaId) { this.agendaId = agendaId; }
+    public Long getAgendaId() {
+        return agendaId;
+    }
 
-    public String getDiagnostico() { return diagnostico; }
-    public void setDiagnostico(String diagnostico) { this.diagnostico = diagnostico; }
+    public void setAgendaId(Long agendaId) {
+        this.agendaId = agendaId;
+    }
 
-    public String getObservacion() { return observacion; }
-    public void setObservacion(String observacion) { this.observacion = observacion; }
+    public String getDiagnostico() {
+        return diagnostico;
+    }
+
+    public void setDiagnostico(String diagnostico) {
+        this.diagnostico = diagnostico;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
 }

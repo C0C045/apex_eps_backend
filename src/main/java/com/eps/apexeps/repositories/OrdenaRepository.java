@@ -3,8 +3,8 @@ package com.eps.apexeps.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.eps.apexeps.models.Genera;
+import com.eps.apexeps.models.Ordena;
 
 @Repository
-public interface GeneraRepository extends JpaRepository<Genera, Long> {
+public interface OrdenaRepository extends JpaRepository<Ordena, Long> {
 }
